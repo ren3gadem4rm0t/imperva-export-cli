@@ -1,0 +1,31 @@
+# .goreleaser.yml
+project_name: imperva-export-cli
+builds:
+  - id: default
+    main: ./main.go
+    binary: imperva-export-cli
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      -s -w
+
+archive:
+  format: tar.gz
+  name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+  files:
+    - LICENSE
+    - README.md
+
+checksum:
+  name_template: "{{ .ProjectName }}_{{ .Version }}_checksums.txt"
+
+snapshot:
+  name_template: "{{ .ProjectName }}_snapshot_{{ .Os }}_{{ .Arch }}"
+
+changelog:
+  skip: true

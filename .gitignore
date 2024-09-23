@@ -2,6 +2,9 @@
 /.vscode/
 .DS_Store
 /coverage/
+/dist/
+coverage.*
+*.out
 /local/
 /.local/
 code.*

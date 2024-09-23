@@ -1,0 +1,336 @@
+openapi: 3.0.1
+info:
+  title: Account-Export API
+  description: "Export account configuration settings from the Imperva platform to\
+    \ a zip file in standard Terraform format. For the full feature documentation,\
+    \ see [Export Account Configuration](https://docs.imperva.com/bundle/cloud-application-security/page/account-export.htm)."
+  license:
+    name: The terms in the absence of an applicable signed agreement between you and
+      Imperva
+    url: https://www.imperva.com/legal/license-agreement/
+  version: 1.0.0
+servers:
+- url: https://api.imperva.com/account-export-import
+  description: Imperva API server
+security:
+- api_key: []
+- api_id: []
+paths:
+  /v3/export:
+    post:
+      tags:
+      - Account configuration export
+      summary: Initiate the export process
+      description: "This API initiates the export process for an account (parent or\
+        \ sub account). The process is asynchronous. The response body contains the\
+        \ handler parameter, that is used to identify the current export process.\
+        \ Send this handler in the download request. It can also be used to check\
+        \ the status and retrieve the process results."
+      operationId: exportAsync
+      parameters:
+      - name: caid
+        in: query
+        description: The account ID to work on
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: x-API-Id
+        in: header
+        description: An API ID created and managed in the Imperva Cloud Security Console
+          and used for authentication
+        required: true
+        schema:
+          type: string
+      - name: x-API-Key
+        in: header
+        description: An API key created and managed in the Imperva Cloud Security
+          Console and used for authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        "202":
+          description: Export is in progress
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AsyncResponse'
+              example:
+                handler: 1234-abcd-5678-efgh-12qw45rt67ty
+                status: Export is in progress
+        "403":
+          description: "This resource, or one of its associated resources, is currently\
+            \ at work. Please try again later"
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/APIError'
+              example:
+                errors:
+                - status: 403
+                  id: 20014b504cb97819
+                  source:
+                    pointer: /export
+                  title: Operation Forbidden
+                  detail: "This resource, or one of its associated resources, is currently\
+                    \ at work. Please try again later"
+        "401":
+          description: Authentication missing or invalid
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/APIError'
+              example:
+                errors:
+                - status: 500
+                  id: 20014b504cb97819
+                  source:
+                    pointer: /export
+                  title: Authentication Error
+                  detail: Authentication missing or invalid
+        "500":
+          description: Something went wrong. Contact support
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/APIError'
+              example:
+                errors:
+                - status: 500
+                  id: 20014b504cb97819
+                  source:
+                    pointer: /export
+                  title: Internal Server Error
+                  detail: Something went wrong. Contact support
+  /v3/export/{resourceType}/{id}:
+    post:
+      tags:
+      - Account configuration export
+      summary: "Initiate the export process for a single resource: site or policy."
+      description: "This API initiates the export process for a single resource: site\
+        \ or policy. The process is asynchronous. The response body contains a code,\
+        \ located in the handler parameter, that is used to identify the current export\
+        \ process. Send this code in the download request. It can also be used to\
+        \ check the status and retrieve the process results."
+      operationId: exportRootResource
+      parameters:
+      - name: caid
+        in: query
+        description: The account to work on
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: resourceType
+        in: path
+        description: "The resource type to be exported: SITE or POLICY"
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: The Imperva ID of the website or policy
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: x-API-Id
+        in: header
+        description: An API ID created and managed in the Imperva Cloud Security Console
+          and used for authentication
+        required: true
+        schema:
+          type: string
+      - name: x-API-Key
+        in: header
+        description: An API key created and managed in the Imperva Cloud Security
+          Console and used for authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        "403":
+          description: "This resource, or one of its associated resources, is currently\
+            \ at work. Please try again later"
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/APIError'
+              example:
+                errors:
+                - status: 403
+                  id: 20014b504cb97819
+                  source:
+                    pointer: /export/SITE/1234
+                  title: Operation Forbidden
+                  detail: "This resource, or one of its associated resources, is currently\
+                    \ at work. Please try again later"
+        "202":
+          description: Export is in progress
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AsyncResponse'
+              example:
+                handler: 1234-abcd-5678-efgh-12qw45rt67ty
+                status: Export is in progress
+        "500":
+          description: Something went wrong. Contact support
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/APIError'
+              example:
+                errors:
+                - status: 500
+                  id: 20014b504cb97819
+                  source:
+                    pointer: /export/SITE/1234
+                  title: Internal Server Error
+                  detail: Something went wrong. Contact support
+        "401":
+          description: Authentication missing or invalid
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/APIError'
+              example:
+                errors:
+                - status: 500
+                  id: 20014b504cb97819
+                  source:
+                    pointer: /export/SITE/1234
+                  title: Authentication Error
+                  detail: Authentication missing or invalid
+
+
+  /v3/export/download/{handler}:
+    get:
+      tags:
+      - Account configuration export
+      summary: Download the exported zip file after successful export
+      description: |-
+        This API is used to download the exported zip file after export is complete.
+
+        While the export process is in progress the response status will be 202. Once the export process has finished successfully, the response status will be 200 and the file will be served.
+      operationId: downloadAsync
+      parameters:
+      - name: caid
+        in: query
+        description: The account to work on.
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: handler
+        in: path
+        description: The handler received in the export response. The handler identifies
+          the export process and is used to check the status and retrieve the process
+          zip file when it is ready.
+        required: true
+        schema:
+          type: string
+      - name: x-API-Id
+        in: header
+        description: An API ID created and managed in the Imperva Cloud Security Console
+          and used for authentication
+        required: true
+        schema:
+          type: string
+      - name: x-API-Key
+        in: header
+        description: An API key created and managed in the Imperva Cloud Security
+          Console and used for authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        "202":
+          description: Export is in progress
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AsyncResponse'
+              example:
+                handler: 1234-abcd-5678-efgh-12qw45rt67ty
+                status: Export is in progress
+        "404":
+          description: Resource Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/APIError'
+              example:
+                errors:
+                - status: 404
+                  id: 20014b504cb97819
+                  source:
+                    pointer: /export/download/1234-abcd-5678-efgh-12qw45rt67ty
+                  title: Resource Not Found
+                  detail: Resource Not Found
+        "200":
+          description: Successful operation
+          content:
+            '*/*':
+              schema:
+                type: object
+        "500":
+          description: Something went wrong. Contact support
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/APIError'
+              example:
+                errors:
+                - status: 500
+                  id: 20014b504cb97819
+                  source:
+                    pointer: /export/download/1234-abcd-5678-efgh-12qw45rt67ty
+                  title: Internal Server Error
+                  detail: Something went wrong. Contact support
+
+components:
+  schemas:
+    AsyncResponse:
+      type: object
+      properties:
+        handler:
+          type: string
+          description: The code provided in the export response. Used to identify
+            the associated zip file when sending the download request.
+        status:
+          type: string
+          description: The HTTP response status code indicating the status of the
+            export process.
+    APIError:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        id:
+          type: string
+        code:
+          type: string
+        source:
+          type: object
+          additionalProperties:
+            type: object
+        title:
+          type: string
+        detail:
+          type: string
+  securitySchemes:
+    api_key:
+      type: apiKey
+      description: An API key created and managed in the Imperva Cloud Security Console
+        and used for authentication
+      name: x-API-Key
+      in: header
+    api_id:
+      type: apiKey
+      description: An API ID created and managed in the Imperva Cloud Security Console
+        and used for authentication
+      name: x-API-Id
+      in: header
