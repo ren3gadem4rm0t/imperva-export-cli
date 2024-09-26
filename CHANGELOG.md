@@ -8,18 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- initial cli tool code
-- repo meta
 
 ### Changed
+- README.m badges
 
 ### Fixed
 
 ### Removed
 
 
-## [vX.X.X] - YYYY-MM-DD
+## [v0.1.0] - 2024-09-26
 ### Added
+- initial code release
 
 ### Changed
 
