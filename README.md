@@ -1,13 +1,12 @@
 # Imperva Export CLI
 
 [![Build Status](https://github.com/ren3gadem4rm0t/imperva-export-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/ren3gadem4rm0t/imperva-export-cli/actions/workflows/ci.yml)
-<!-- [![codecov](https://codecov.io/gh/ren3gadem4rm0t/imperva-export-cli/branch/main/graph/badge.svg?token=YOUR_CODECOV_TOKEN)](https://codecov.io/gh/ren3gadem4rm0t/imperva-export-cli) -->
 [![Go Report Card](https://goreportcard.com/badge/github.com/ren3gadem4rm0t/imperva-export-cli)](https://goreportcard.com/report/github.com/ren3gadem4rm0t/imperva-export-cli)
-![License](https://img.shields.io/github/license/ren3gadem4rm0t/imperva-export-cli)
-![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/ren3gadem4rm0t/imperva-export-cli?sort=semver)
-![GitHub issues](https://img.shields.io/github/issues/ren3gadem4rm0t/imperva-export-cli)
-![GitHub stars](https://img.shields.io/github/stars/ren3gadem4rm0t/imperva-export-cli?style=social)
-![Gosec](https://img.shields.io/badge/gosec-passing-brightgreen)
+[![License](https://img.shields.io/github/license/ren3gadem4rm0t/imperva-export-cli)](https://github.com/ren3gadem4rm0t/imperva-export-cli/blob/main/LICENSE)
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/ren3gadem4rm0t/imperva-export-cli?sort=semver)](https://github.com/ren3gadem4rm0t/imperva-export-cli/releases)
+[![Gosec](https://img.shields.io/badge/gosec-passing-brightgreen)](https://github.com/securego/gosec)
+[![GitHub issues](https://img.shields.io/github/issues/ren3gadem4rm0t/imperva-export-cli)](https://github.com/ren3gadem4rm0t/imperva-export-cli/issues)
+[![GitHub stars](https://img.shields.io/github/stars/ren3gadem4rm0t/imperva-export-cli?style=social)](https://github.com/ren3gadem4rm0t/imperva-export-cli/stargazers)
 
 The **Imperva Export CLI** is a command-line tool designed to interact seamlessly with the Imperva Account-Export API. It facilitates the export of account configurations into ZIP files formatted for standard Terraform usage. This tool simplifies the process of exporting, monitoring, and downloading account configurations, ensuring efficient and automated management of your Imperva resources.
 
