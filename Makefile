@@ -20,6 +20,11 @@ coverage:
 	go tool cover -html=coverage/coverage.out -o coverage/coverage.html; \
 	open coverage/coverage.html
 
+coverage-ci:
+	@mkdir -p coverage
+	@go test -coverprofile=coverage/coverage.out ./... && \
+	go tool cover -func=coverage/coverage.out
+
 vet:
 	@go vet ./...
 
