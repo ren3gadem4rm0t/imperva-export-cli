@@ -24,7 +24,7 @@ jobs:
     - name: Lint
       uses: golangci/golangci-lint-action@v6
       with:
-        version: v1.59
+        version: v1.61
 
     - name: Check formatting
       run: make check-fmt
@@ -38,6 +38,9 @@ jobs:
       uses: securego/gosec@master
       with:
         args: ./...
+
+    - name: Build
+      run: make build
 
     - name: Test
       run: make test
