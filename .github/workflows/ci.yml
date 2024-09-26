@@ -34,10 +34,11 @@ jobs:
       with:
         version: "latest"
 
-    - name: Run Gosec Security Scanner
-      uses: securego/gosec@master
-      with:
-        args: . ./internal/...
+    - name: Install gosec
+      run: go install github.com/securego/gosec/v2/cmd/gosec@latest
+
+    - name: Security Scanner
+      run: make ast
 
     - name: Build
       run: make build
