@@ -5,6 +5,13 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+    paths:
+      - 'main.go'
+      - '**/*.go'
+      - '**/*.mod'
+      - '**/*.sum'
+      - '**/.github/workflows/ci.yml'
+      - '**/.github/workflows/release.yml'
   workflow_dispatch: {}
 
 jobs:
