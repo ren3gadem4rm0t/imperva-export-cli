@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch: {}
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.23'
+
+    - name: Vet
+      run: make vet
+
+    - name: Lint
+      uses: golangci/golangci-lint-action@v6
+      with:
+        version: v1.61
+
+    - name: Check formatting
+      run: make check-fmt
+
+    - name: Staticcheck
+      uses: dominikh/staticcheck-action@v1
+      with:
+        version: "latest"
+
+    - name: Install gosec
+      run: go install github.com/securego/gosec/v2/cmd/gosec@latest
+
+    - name: Security Scanner
+      run: make ast
+
+    - name: Build
+      run: make build
+
+    - name: Test
+      run: make test
+
+    - name: Coverage
+      run: make coverage-ci
+
+    # - name: Upload coverage to Codecov
+    #   uses: codecov/codecov-action@v4
+    #   with:
+    #     files: coverage/coverage.out
+    #     flags: unittests
+    #     name: codecov-umbrella
+    #     fail_ci_if_error: true
+    #     verbose: true
+    #   env:
+    #     CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+    - name: Cleanup
+      run: make clean
