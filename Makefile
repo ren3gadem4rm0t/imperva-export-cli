@@ -37,9 +37,8 @@ clean:
 	@go clean
 	@rm -f ./coverage.out ./coverage.html coverage/coverage.out coverage/coverage.html
 	@rm -rf ./coverage
-
-fuzz:
-	@echo "Running fuzz tests..."
+	@rm -f imperva-export-cli
+	@rm -rf ./dist
 
 build:
 	@go build -o imperva-export-cli .

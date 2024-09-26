@@ -10,23 +10,41 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
+
     - name: Set up Go
       uses: actions/setup-go@v5
       with:
         go-version: '1.23'
-    - name: Install dependencies
-      run: go mod download
-    - name: Run Lint
-      run: make lint check-fmt
-    - name: Run Security Checks
-      run: make ast
-    - name: Build
-      run: make build
-    - name: Generate Coverage
+
+    - name: Vet
+      run: make vet
+
+    - name: Lint
+      uses: golangci/golangci-lint-action@v6
+      with:
+        version: v1.59
+
+    - name: Check formatting
+      run: make check-fmt
+
+    - name: Staticcheck
+      uses: dominikh/staticcheck-action@v1
+      with:
+        version: "latest"
+
+    - name: Run Gosec Security Scanner
+      uses: securego/gosec@master
+      with:
+        args: ./...
+
+    - name: Test
+      run: make test
+
+    - name: Coverage
       run: make coverage
+
     # - name: Upload coverage to Codecov
     #   uses: codecov/codecov-action@v4
     #   with:
@@ -37,3 +55,6 @@ jobs:
     #     verbose: true
     #   env:
     #     CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+    - name: Cleanup
+      run: make clean
