@@ -1,7 +1,7 @@
 # Imperva Export CLI
 
 [![Build Status](https://github.com/ren3gadem4rm0t/imperva-export-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/ren3gadem4rm0t/imperva-export-cli/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/ren3gadem4rm0t/imperva-export-cli/branch/main/graph/badge.svg?token=YOUR_CODECOV_TOKEN)](https://codecov.io/gh/ren3gadem4rm0t/imperva-export-cli)
+<!-- [![codecov](https://codecov.io/gh/ren3gadem4rm0t/imperva-export-cli/branch/main/graph/badge.svg?token=YOUR_CODECOV_TOKEN)](https://codecov.io/gh/ren3gadem4rm0t/imperva-export-cli) -->
 [![Go Report Card](https://goreportcard.com/badge/github.com/ren3gadem4rm0t/imperva-export-cli)](https://goreportcard.com/report/github.com/ren3gadem4rm0t/imperva-export-cli)
 ![License](https://img.shields.io/github/license/ren3gadem4rm0t/imperva-export-cli)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/ren3gadem4rm0t/imperva-export-cli?sort=semver)

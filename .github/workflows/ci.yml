@@ -19,17 +19,21 @@ jobs:
         go-version: '1.23'
     - name: Install dependencies
       run: go mod download
+    - name: Run Lint
+      run: make lint check-fmt
+    - name: Run Security Checks
+      run: make ast
     - name: Build
-      run: go build -v ./...
-    - name: Run Tests
-      run: go test -v ./...
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v4
-      with:
-        files: coverage/coverage.out
-        flags: unittests
-        name: codecov-umbrella
-        fail_ci_if_error: true
-        verbose: true
-      env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      run: make build
+    - name: Generate Coverage
+      run: make coverage
+    # - name: Upload coverage to Codecov
+    #   uses: codecov/codecov-action@v4
+    #   with:
+    #     files: coverage/coverage.out
+    #     flags: unittests
+    #     name: codecov-umbrella
+    #     fail_ci_if_error: true
+    #     verbose: true
+    #   env:
+    #     CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
